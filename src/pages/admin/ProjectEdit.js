@@ -26,7 +26,7 @@ const ProjectsEdit = ({projectId}) => {
     return `<div>
      <h1>Projects EDIT</h1>
             <form id="project-form" action="">
-            <input id="project-name" type="text" value="${}">
+            <input id="project-name" type="text" value="">
             <input id="project-author" type="text">
             <button type="">Them</button>
             </form>
