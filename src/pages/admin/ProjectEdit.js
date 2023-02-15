@@ -1,6 +1,6 @@
 import { router, useEffect, useState } from "../../lib";
 
-const ProjectsAdd = () => {
+const ProjectsEdit = ({projectId}) => {
     useEffect(() => {
         const form = document.querySelector("#project-form");
         const name = document.querySelector("#project-name");
@@ -8,11 +8,12 @@ const ProjectsAdd = () => {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             const formData = {
+                id : projectId,
                 name: name.value,
                 author: author.value
             }
-            fetch("http://localhost:3000/projects", {
-                method: "POST",
+            fetch(`http://localhost:3000/projects/${projectId}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -23,9 +24,9 @@ const ProjectsAdd = () => {
         });
     });
     return `<div>
-     <h1>Projects Add</h1>
+     <h1>Projects EDIT</h1>
             <form id="project-form" action="">
-            <input id="project-name" type="text">
+            <input id="project-name" type="text" value="${}">
             <input id="project-author" type="text">
             <button type="">Them</button>
             </form>
@@ -34,4 +35,4 @@ const ProjectsAdd = () => {
         ;
 }
 
-export default ProjectsAdd
+export default ProjectsEdit

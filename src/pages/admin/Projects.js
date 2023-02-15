@@ -1,28 +1,30 @@
-import projectsFake from "../../data";
 import { router, useEffect, useState } from "../../lib";
 
 const ProjectsAminPage = () => {
-    const [data, setData] = useState([]);
+    const [projects, setProjects] = useState([]);
     useEffect(() => {
-        const project = JSON.parse(localStorage.getItem("projects")) || [];
-        setData(project)
-    }, [])
+        fetch("http://localhost:3000/projects")
+            .then((response) => response.json())
+            .then((data) => setProjects(data))
+            .catch((error) => console.log(error));
+    }, []);
     useEffect(() => {
         const remove = document.querySelectorAll(".remove");
         for (const btn of remove) {
             btn.addEventListener("click", function () {
-                const idn = this.dataset.id;
-                const newData = data.filter((item)  =>
-                    item.id != idn
-                );
-                localStorage.setItem("projects", JSON.stringify(newData));
-                setData(newData);
+                const id = this.dataset.id;
+                fetch(`http://localhost:3000/projects/${id}`, { method: "DELETE" }).then(() => {
+                    // xóa ở client : reRender
+                    const newsProject = projects.filter((project) => project.id != id);
+                    setProjects(newsProject);
+                });
             })
         }
     });
     return ` <div>
     <h1>Quan ly du an</h1>
     <a href="/admin/project/add"> Them </a>
+    <a href="/admin/project/add"> Edit </a>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -32,7 +34,7 @@ const ProjectsAminPage = () => {
             </tr>
             </thead>
             <tbody>
-                ${data.map((project, index) => {
+                ${projects.map((project, index) => {
         return `
                     <tr>
                          <td >${index + 1}</td>
